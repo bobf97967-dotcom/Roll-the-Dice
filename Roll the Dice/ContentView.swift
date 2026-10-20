@@ -21,12 +21,20 @@ struct ContentView: View {
                 . rotationEffect(.degrees(rotation))
                 .rotation3DEffect(.degrees(rotation), axis: (x: 1, y: 1, z: 0))
                 .padding () .onTapGesture {
-                    withAnimation {
-                        rotation += 360
+                    chooseRandom (times: 3)
+                    withAnimation(.interpolatingSpring(Spring(stiffness: 10, damping: 2))) {
+                    rotation += 360
                     }
                     randomValue = Int.random(in: 1...6)
                 }
             Spacer()
+        }
+    }
+    func chooseRandom(times:Int) { if times > 0 {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        randomValue = Int.random(in: 1...6)
+        chooseRandom(times: times - 1)
+        }
         }
     }
 }
